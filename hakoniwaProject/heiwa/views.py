@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from django.http.response import JsonResponse
 from .models import Islands
 
-#ターン関係の関数にはprocessingをつける
+#ターン関係の関数にはprocessingをつけるs
 
 class IslandCreateView(APIView):
     def post(self,request):
