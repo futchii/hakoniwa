@@ -1,7 +1,7 @@
 import json
 import random
 
-import turn
+from . import turn
 
 from rest_framework.views import APIView
 from django.http.response import JsonResponse
@@ -52,6 +52,10 @@ class TestView(APIView):
         user_island = Islands.objects.get(account=request.user)
         message = user_island.name
         return JsonResponse({'message':message})
+
+class infoView(APIView):
+    def get(self,request):
+        user_island = Islands.objects.get(account=request.user)
 
 class CashingView(APIView):
     def get(self,request):
