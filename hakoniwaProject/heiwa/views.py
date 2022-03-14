@@ -4,6 +4,7 @@ import random
 from . import turn
 
 from rest_framework.views import APIView
+from rest_framework.response import Response
 from django.http.response import JsonResponse
 from .models import Islands
 
@@ -53,9 +54,19 @@ class TestView(APIView):
         message = user_island.name
         return JsonResponse({'message':message})
 
-class infoView(APIView):
+class IslandReadView(APIView):
     def get(self,request):
         user_island = Islands.objects.get(account=request.user)
+        name = user_island.name
+        island = user_island.island
+        money = user_island.money
+        food = user_island.food
+        people = user_island.people
+        farm_worker = user_island.farm_worker
+        factory_worker = user_island.factory_worker
+        mine_worker = user_island.mine_worker
+        return JsonResponse({'name':name,'island':island,'money':money,'food':food,
+        'people':people,'farm_worker':farm_worker,'factory_worker':factory_worker,'mine_worker':mine_worker})
 
 class CashingView(APIView):
     def get(self,request):

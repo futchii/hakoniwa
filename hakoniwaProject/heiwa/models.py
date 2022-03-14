@@ -10,7 +10,10 @@ class Islands(models.Model):
     island = models.TextField()
     money = models.IntegerField(default=0)
     food = models.IntegerField(default=0)
-    population = models.IntegerField(default=0)
+    people = models.IntegerField(default=0)
+    farm_worker = models.IntegerField(default=0)
+    factory_worker = models.IntegerField(default=0)
+    mine_worker = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
