@@ -1,5 +1,15 @@
 import random
 
+sea_position = list()
+mountain_position = list()
+defense_position = list()
+haribote_position = list()
+base_position = list() 
+farm_position = list()
+factory_position = list()
+mine_position = list()
+town_position = list()
+
 def start_process(island):
     people = 0
     farm = 0
@@ -10,15 +20,6 @@ def start_process(island):
     factory_worker =0
     mine_worker = 0
     
-    sea_position = list()
-    mountain_position = list()
-    defense_position = list()
-    haribote_position = list()
-    base_position = list() 
-    farm_position = list()
-    factory_position = list()
-    mine_position = list()
-    town_position = list()
     
     for i1 in range(0,12):
         for i2 in range(0,12):
@@ -168,7 +169,7 @@ def food_processing(food,people):
     else:
         return 0
 
-def development_processing(island,money,action,position):
+def development_processing(island,money,position,action):
     if action == 0:#整地
         if (
             money - 5 >= 0 and
