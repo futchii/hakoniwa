@@ -1,7 +1,7 @@
 import json
 import random
 
-from . import turn
+from . import calculation
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -18,6 +18,7 @@ class IslandReadView(APIView):
     def get(self,request):
         user_island = Islands.objects.get(account=request.user)
         name = user_island.name
+        turn = user_island.turn
         island = user_island.island
         money = user_island.money
         food = user_island.food
@@ -25,7 +26,7 @@ class IslandReadView(APIView):
         farm_worker = user_island.farm_worker
         factory_worker = user_island.factory_worker
         mine_worker = user_island.mine_worker
-        return JsonResponse({'name':name,'island':island,'money':money,'food':food,
+        return JsonResponse({'name':name,'turn':turn,'island':island,'money':money,'food':food,
         'people':people,'farm_worker':farm_worker,'factory_worker':factory_worker,'mine_worker':mine_worker})
 
 
@@ -52,7 +53,7 @@ class IslandCreateView(APIView):
             [0,0,0,0,0,0,0,0,0,0,0,0]
             ]
 
-        island = turn.create_island(island)
+        island = calculation.create_island(island)
         
         try:
             Islands.objects.create(
@@ -72,6 +73,7 @@ class CashingView(APIView):
     def get(self,request):
         user_island = Islands.objects.get(account=request.user)
         name = user_island.name
+        turn = user_island.turn
         island = user_island.island
         money = user_island.money
         food = user_island.food
@@ -79,6 +81,12 @@ class CashingView(APIView):
         farm_worker = user_island.farm_worker
         factory_worker = user_island.factory_worker
         mine_worker = user_island.mine_worker
+
+        if(turn<=0):
+            return JsonResponse({'name':name,'turn':turn,'island':island,'money':money,'food':food,
+            'people':people,'farm_worker':farm_worker,'factory_worker':factory_worker,'mine_worker':mine_worker})
+        else:
+            turn = turn - 1
 
         (people,
         farm_worker,
@@ -92,20 +100,21 @@ class CashingView(APIView):
         farm_position,
         factory_position,
         mine_position,
-        town_position) = turn.start_process(island)
+        town_position) = calculation.start_process(island)
 
-        food = turn.harvest_processing(farm_worker)
-        money = turn.income_processing(factory_worker,mine_worker)
-        food = turn.food_processing(food,people)
-        money = turn.cashing_processing(money)
+        food = calculation.harvest_processing(farm_worker)
+        money = calculation.income_processing(factory_worker,mine_worker)
+        food = calculation.food_processing(food,people)
+        money = calculation.cashing_processing(money)
 
         (people,
         farm_worker,
         factory_worker,
-        mine_worker) = turn.end_processing
+        mine_worker) = calculation.end_processing
 
         try:
             user_island.name = name
+            user_island.turn = turn
             user_island.island = island
             user_island.money = money
             user_island.food = food
@@ -117,5 +126,5 @@ class CashingView(APIView):
         except:
             return JsonResponse({'message':'registration failure.'}, status=400)
         
-        return JsonResponse({'name':name,'island':island,'money':money,'food':food,
+        return JsonResponse({'name':name,'turn':turn,'island':island,'money':money,'food':food,
         'people':people,'farm_worker':farm_worker,'factory_worker':factory_worker,'mine_worker':mine_worker})
