@@ -31,7 +31,7 @@ class Bbs_content(models.Model):
     content = models.TextField()
 
     def __str__(self):
-        return self.id
+        return self.content
 
 class Note(models.Model):
     contributor = models.ForeignKey(Islands,on_delete=models.SET_NULL,blank=True,null=True)
@@ -45,4 +45,4 @@ class Note_content(models.Model):
     content = models.TextField()
 
     def __str__(self):
-        return self.id
+        return self.content

@@ -20,7 +20,6 @@ def start_process(island):
     factory_worker =0
     mine_worker = 0
     
-    
     for i1 in range(0,12):
         for i2 in range(0,12):
             if island[i1][i2] == 0 or island[i1][i2] == 1:
@@ -183,10 +182,27 @@ def development_processing(island,money,position,action):
             money = money - 5 
 
     elif action == 1:#埋め立て
-        pass
-
+        if(
+            money - 150 >= 0 and
+            island[position[0]][position[1]] == 0 or
+            island[position[0]][position[1]] == 1
+        ):
+            money = money - 150
+            island[position[0]][position[1]] = island[position[0]][position[1]] + 1
+            
     elif action == 2:#掘削
-        pass
+        if(
+            money - 200 >= 0 and
+            (island[position[0]][position[1]] >= 0 and island[position[0]][position[1]] <= 5)
+        ):
+            money = money - 200
+            if (island[position[0]][position[1]] >= 1 and island[position[0]][position[1]] <= 2):
+                island[position[0]][position[1]] = island[position[0]][position[1]] - 1
+            elif island[position[0]][position[1]] == 4:
+                island[position[0]][position[1]] = 2
+            elif island[position[0]][position[1]] == 3 or island[position[0]][position[1]] == 5:
+                island[position[0]][position[1]] = 1
+            
 
     elif action == 3:#伐採
         if island[position[0]][position[1]] >= 70 and island[position[0]][position[1]] < 80:
@@ -599,3 +615,9 @@ def create_island(island):
         island[mura_position[0]][mura_position[1]] = random.randint(101,120)
 
     return island
+
+def dev_action(dev_cmd):
+    if (dev_cmd == 'landfill'):
+        return 1
+    elif (dev_cmd == 'drilling'):
+        return 2
